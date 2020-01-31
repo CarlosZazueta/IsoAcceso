@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="Iso.Views.ForgotPage"
+    BindingContext="{Binding Main, Source={StaticResource Locator}}"
+    Title="Recuperar Constraseña">
+    <ContentPage.Content>
+        <ScrollView
+            BackgroundColor="#1976D2">
+            <StackLayout Padding="15">
+                <Frame
+                    VerticalOptions="CenterAndExpand"
+                    CornerRadius="25"
+                    BackgroundColor="White"
+                    HeightRequest="400"
+                    Padding="5">
+                    <Grid
+                        Margin="10,5"
+                        Padding="10"
+                        VerticalOptions="CenterAndExpand">
+                        <Label
+                            Padding="3"
+                            VerticalTextAlignment="End"
+                            VerticalOptions="CenterAndExpand"
+                            Grid.Row="0"
+                            Text="Empresa">
+                        </Label>
+                        <Entry
+                            Grid.Row="1"
+                            Text="{Binding Company}"
+                            Placeholder="Digite el nombre de tu empresa...">
+                        </Entry>
+                        <Button
+                            VerticalOptions="End"
+                            Grid.Row="3"
+                            BackgroundColor="#1976D2"
+                            BorderRadius="23"
+                            Command="{Binding LoginCommand}"
+                            WidthRequest="200"
+                            HorizontalOptions="Center"
+                            IsEnabled="{Binding IsEnabled, Mode=TwoWay}"
+                            Text="Login"
+                            TextColor="White"/>
+                    </Grid>
+                </Frame>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

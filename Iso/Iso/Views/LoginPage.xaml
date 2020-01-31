@@ -1,0 +1,108 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="Iso.Views.LoginPage"
+    BindingContext="{Binding Main, Source={StaticResource Locator}}"
+    Title="Login">
+    <ContentPage.Content>
+        <ScrollView
+            BindingContext="{Binding Login}"
+            BackgroundColor="#1976D2">
+            <StackLayout Padding="15">
+                <Label
+                    HeightRequest="60"
+                    Text="ISO APP"
+                    VerticalTextAlignment="Center"
+                    HorizontalTextAlignment="Center"
+                    FontSize="Title"
+                    FontAttributes="Bold"
+                    TextColor="White">
+                </Label>
+                <Frame
+                    CornerRadius="25"
+                    BackgroundColor="White"
+                    HeightRequest="600"
+                    Padding="5">
+                    <Grid
+                        Margin="10,5"
+                        Padding="10"
+                        VerticalOptions="CenterAndExpand">
+                        <Label
+                            Padding="3"
+                            HeightRequest="50"
+                            VerticalTextAlignment="End"
+                            VerticalOptions="CenterAndExpand"
+                            Grid.Row="0"
+                            Text="Empresa">
+                        </Label>
+                        <Entry
+                            Grid.Row="1"
+                            Text="{Binding Company}"
+                            Placeholder="Digite el nombre de tu empresa...">
+                        </Entry>
+                        <Label
+                            Padding="3"
+                            HeightRequest="50"
+                            VerticalTextAlignment="End"
+                            VerticalOptions="CenterAndExpand"
+                            Grid.Row="2"
+                            Text="Usuario">
+                        </Label>
+                        <Entry
+                            Grid.Row="3"
+                            Text="{Binding User}"
+                            Placeholder="Digite su usuario...">
+                        </Entry>
+                        <Label
+                            Padding="3"
+                            HeightRequest="50"
+                            VerticalTextAlignment="End"
+                            VerticalOptions="CenterAndExpand"
+                            Grid.Row="4"
+                            Text="Contraseña">
+                        </Label>
+                        <Entry
+                            Grid.Row="5"
+                            Text="{Binding Password}"
+                            Placeholder="Digite su constraseña...">
+                        </Entry>
+                        <!--Revisar esta parte-->
+                        <Label
+                            Grid.Row="6"
+                            HeightRequest="50"
+                            VerticalTextAlignment="Center"
+                            VerticalOptions="CenterAndExpand"
+                            HorizontalOptions="StartAndExpand"
+                            Text="Recordarme en este dispositivo"/>
+                        <Switch
+                            Grid.Row="6"
+                            IsToggled="{Binding IsRemembered, Mode=TwoWay}"
+                            HorizontalOptions="End"/>
+                        
+                        <Label
+                            Grid.Row="7"
+                            HeightRequest="50"
+                            VerticalTextAlignment="Center"
+                            VerticalOptions="CenterAndExpand"
+                            HorizontalOptions="CenterAndExpand"
+                            Text="¿Olvidaste tu constraseña?">
+                        </Label>
+                        <Button
+                            VerticalOptions="End"
+                            Grid.Row="8"
+                            BackgroundColor="#1976D2"
+                            BorderRadius="23"
+                            Command="{Binding LoginCommand}"
+                            HeightRequest="46"
+                            WidthRequest="200"
+                            HorizontalOptions="Center"
+                            IsEnabled="{Binding IsEnabled, Mode=TwoWay}"
+                            Text="Login"
+                            TextColor="White"/>
+                    </Grid>
+                </Frame>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>
