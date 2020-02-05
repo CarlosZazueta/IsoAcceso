@@ -39,7 +39,7 @@
                         <Entry
                             Grid.Row="1"
                             Text="{Binding Company}"
-                            Placeholder="Digite el nombre de tu empresa...">
+                            Placeholder="Digite el código de su empresa...">
                         </Entry>
                         <Label
                             Padding="3"
@@ -80,14 +80,19 @@
                             IsToggled="{Binding IsRemembered, Mode=TwoWay}"
                             HorizontalOptions="End"/>
                         
-                        <Label
+                        <Button
                             Grid.Row="7"
-                            HeightRequest="50"
-                            VerticalTextAlignment="Center"
-                            VerticalOptions="CenterAndExpand"
-                            HorizontalOptions="CenterAndExpand"
-                            Text="¿Olvidaste tu constraseña?">
-                        </Label>
+                            BackgroundColor="#FFFFFF"
+                            BorderRadius="23"
+                            Command="{Binding ForgotPasswordCommand}"
+                            HeightRequest="30"
+                            WidthRequest="200"
+                            HorizontalOptions="Center"
+                            IsEnabled="{Binding IsEnabled, Mode=TwoWay}"
+                            Text="¿Olvidaste tu constraseña?"
+                            FontSize="Small"
+                            FontAttributes="None"
+                            TextColor="Black"/>
                         <Button
                             VerticalOptions="End"
                             Grid.Row="8"
@@ -95,10 +100,22 @@
                             BorderRadius="23"
                             Command="{Binding LoginCommand}"
                             HeightRequest="46"
-                            WidthRequest="200"
-                            HorizontalOptions="Center"
+                            WidthRequest="150"
+                            HorizontalOptions="Start"
                             IsEnabled="{Binding IsEnabled, Mode=TwoWay}"
                             Text="Login"
+                            TextColor="White"/>
+                        <Button
+                            VerticalOptions="End"
+                            Grid.Row="8"
+                            BackgroundColor="Gray"
+                            BorderRadius="23"
+                            Command="{Binding LoginCommand}"
+                            HeightRequest="46"
+                            WidthRequest="150"
+                            HorizontalOptions="End"
+                            IsEnabled="{Binding IsEnabled, Mode=TwoWay}"
+                            Text="Login QR"
                             TextColor="White"/>
                     </Grid>
                 </Frame>

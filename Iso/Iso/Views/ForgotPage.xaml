@@ -29,7 +29,7 @@
                         <Entry
                             Grid.Row="1"
                             Text="{Binding Company}"
-                            Placeholder="Digite el nombre de tu empresa...">
+                            Placeholder="Digite el código de su empresa...">
                         </Entry>
                         <Button
                             VerticalOptions="End"
@@ -40,7 +40,7 @@
                             WidthRequest="200"
                             HorizontalOptions="Center"
                             IsEnabled="{Binding IsEnabled, Mode=TwoWay}"
-                            Text="Login"
+                            Text="Recuperar Contraseña"
                             TextColor="White"/>
                     </Grid>
                 </Frame>

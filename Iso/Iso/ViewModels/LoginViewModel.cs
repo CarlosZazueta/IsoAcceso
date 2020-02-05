@@ -4,9 +4,14 @@
     using GalaSoft.MvvmLight.Command;
     using Xamarin.Forms;
     using Views;
+    using Iso.Services;
 
     public class LoginViewModel : BaseViewModel
     {
+        #region Services
+        private ApiService apiService;
+        #endregion
+
         #region Attributes
         private string company;
         private string password;
@@ -56,6 +61,7 @@
         #region Constructors
         public LoginViewModel()
         {
+            this.apiService = new ApiService();
 
             this.IsRemembered = true;
             this.isEnabled = true;
@@ -65,6 +71,7 @@
         }
         #endregion
 
+        #region Commands
         public ICommand LoginCommand
         {
             get
@@ -75,17 +82,51 @@
 
         public async void Login()
         {
-            var mainViewModel = MainViewModel.GetInstance();
 
-            mainViewModel.ForgotPassword = new ForgotPasswordViewModel();
-            await Application.Current.MainPage.Navigation.PushAsync(new ForgotPage());
+            var data = await apiService.GetData("");
+
+            if (!data.IsSuccess)
+            {
+                await Application.Current.MainPage.DisplayAlert(
+                    "Error",
+                    data.Message,
+                    "Accept");
+                await Application.Current.MainPage.Navigation.PopAsync();
+                return;
+            }
+            else
+            {
+                await Application.Current.MainPage.DisplayAlert(
+                    "Ok",
+                    data.Message,
+                    "Accept");
+                await Application.Current.MainPage.Navigation.PopAsync();
+                return;
+            }
 
             this.IsRunning = false;
             this.IsEnabled = true;
 
+            this.Company = string.Empty;
             this.User = string.Empty;
             this.Password = string.Empty;
         }
+
+        public ICommand ForgotPasswordCommand
+        {
+            get
+            {
+                return new RelayCommand(ForgotPassword);
+            }
+        }
+
+        private async void ForgotPassword()
+        {
+            MainViewModel.GetInstance().ForgotPassword = new ForgotPasswordViewModel();
+            await Application.Current.MainPage.Navigation.PushAsync(new ForgotPage());
+
+        }
+        #endregion
     }
     
 }
