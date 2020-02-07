@@ -37,40 +37,12 @@
             };
         }
 
-        public async Task<Response> GetData(string urlBase)
+        public async Task<string> Get<T>(string urlBase)
         {
-            try
-            {
-                var client = new HttpClient();
-                client.BaseAddress = new Uri(urlBase);
-                var response = await client.GetAsync(urlBase);
-                var result = await response.Content.ReadAsStringAsync();
-
-                if (!response.IsSuccessStatusCode)
-                {
-                    return new Response
-                    {
-                        IsSuccess = false,
-                        Message = result
-                    };
-                }
-
-                var list = JsonConvert.DeserializeObject(result.ToString());
-                return new Response
-                {
-                    IsSuccess = true,
-                    Message = "Ok",
-                    Result = list
-                };
-            }
-            catch (Exception ex)
-            {
-                return new Response
-                {
-                    IsSuccess = false,
-                    Message = ex.Message
-                };
-            }
+            HttpClient client = new HttpClient();
+            var response = await client.GetAsync(urlBase);
+            var json = await response.Content.ReadAsStringAsync();
+            return json;
         }
     }
 }

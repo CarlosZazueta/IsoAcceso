@@ -82,27 +82,12 @@
 
         public async void Login()
         {
-
-            var data = await apiService.GetData("");
-
-            if (!data.IsSuccess)
-            {
-                await Application.Current.MainPage.DisplayAlert(
-                    "Error",
-                    data.Message,
-                    "Accept");
-                await Application.Current.MainPage.Navigation.PopAsync();
-                return;
-            }
-            else
-            {
-                await Application.Current.MainPage.DisplayAlert(
-                    "Ok",
-                    data.Message,
-                    "Accept");
-                await Application.Current.MainPage.Navigation.PopAsync();
-                return;
-            }
+            var data = await apiService.Get<string>("http://172.16.2.104/apiIso/sistema/login/acceso");
+            await Application.Current.MainPage.DisplayAlert(
+                "Hurray!",
+                data,
+                "Accept");
+            await Application.Current.MainPage.Navigation.PopAsync();
 
             this.IsRunning = false;
             this.IsEnabled = true;
