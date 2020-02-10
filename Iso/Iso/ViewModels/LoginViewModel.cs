@@ -5,6 +5,7 @@
     using Xamarin.Forms;
     using Views;
     using Iso.Services;
+    using Iso.Models;
 
     public class LoginViewModel : BaseViewModel
     {
@@ -18,6 +19,8 @@
         private string user;
         private bool isRunning;
         private bool isEnabled;
+        private bool isRefreshing;
+        private string url;
         #endregion
 
         #region Properties
@@ -31,6 +34,12 @@
         {
             get { return this.password; }
             set { SetValue(ref this.password, value); }
+        }
+
+        public string Url
+        {
+            get { return this.url; }
+            set { SetValue(ref this.url, value); }
         }
 
         public string User
@@ -56,6 +65,12 @@
             get { return this.isEnabled; }
             set { SetValue(ref this.isEnabled, value); }
         }
+
+        public bool IsRefreshing
+        {
+            get { return this.IsRefreshing; }
+            set { SetValue(ref this.isRefreshing, value); }
+        }
         #endregion
 
         #region Constructors
@@ -71,23 +86,49 @@
         }
         #endregion
 
-        #region Commands
-        public ICommand LoginCommand
-        {
-            get
-            {
-                return new RelayCommand(Login);
-            }
-        }
+        #region Consumers
+        /*
+         * ===================
+         *        TODO
+         * ===================
+         * Implementar:
+         *** El envio de datos para el control de acceso
+         *** Escribir la URL para el GET y el POST
+         */
 
         public async void Login()
         {
-            var data = await apiService.Get<string>("http://172.16.2.104/apiIso/sistema/login/acceso");
-            await Application.Current.MainPage.DisplayAlert(
-                "Hurray!",
-                data,
-                "Accept");
-            await Application.Current.MainPage.Navigation.PopAsync();
+            this.IsRefreshing = true;
+            var connection = await apiService.CheckConnection();
+
+            if (!connection.IsSuccess)
+            {
+                this.IsRefreshing = false;
+                await Application.Current.MainPage.DisplayAlert(
+                    "Error",
+                    connection.Message,
+                    "Accept");
+                await Application.Current.MainPage.Navigation.PopAsync();
+                return;
+            }
+
+            this.Url = "https://Colocar-url/Login/datos";
+
+            var response = await apiService.Get<User>(this.Url, "", "");
+
+            if (!response.IsSuccess)
+            {
+                this.IsRefreshing = false;
+                await Application.Current.MainPage.DisplayAlert(
+                    "Error",
+                    response.Message,
+                    "Accept");
+                await Application.Current.MainPage.Navigation.PopAsync();
+                return;
+            }
+
+            MainViewModel.GetInstance().Workspace = new WorkspaceViewModel();
+            await Application.Current.MainPage.Navigation.PushAsync(new WorkspacePage());
 
             this.IsRunning = false;
             this.IsEnabled = true;
@@ -95,6 +136,16 @@
             this.Company = string.Empty;
             this.User = string.Empty;
             this.Password = string.Empty;
+        }
+        #endregion
+
+        #region Commands
+        public ICommand LoginCommand
+        {
+            get
+            {
+                return new RelayCommand(Login);
+            }
         }
 
         public ICommand ForgotPasswordCommand

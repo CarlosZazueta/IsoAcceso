@@ -1,5 +1,4 @@
-﻿using System;
-namespace Iso.Models
+﻿namespace Iso.Models
 {
     public class Response
     {

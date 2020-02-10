@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="Iso.Views.WorkspacePage"
+    BindingContext="{Binding Main, Source={StaticResource Locator}}"
+    Title="Area de Trabajo">
+    <ContentPage.Content>
+        <ScrollView
+            BindingContext="{Binding Login}"
+            BackgroundColor="#1976D2">
+            <StackLayout>
+                <Label
+                    Text="Bienvenido ">
+                </Label>
+                <Label
+                    Text="{Binding User}">
+                </Label>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>
