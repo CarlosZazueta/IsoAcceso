@@ -1,8 +1,11 @@
 ﻿namespace Iso.ViewModels
 {
+    using System;
     using System.Windows.Input;
     using GalaSoft.MvvmLight.Command;
     using Iso.Services;
+    using Newtonsoft.Json;
+    using Newtonsoft.Json.Linq;
     using Views;
     using Xamarin.Essentials;
     using Xamarin.Forms;
@@ -79,6 +82,10 @@
         {
             this.apiService = new ApiService();
 
+            this.Company = "10";
+            this.User = "Pruebas";
+            this.Password = "pbe";
+
             this.IsRemembered = true;
             this.isEnabled = true;
 
@@ -95,7 +102,7 @@
          * 
          * Implementar:
          *** El envio de datos para el control de acceso [DONE]
-         *** Escribir la URL para el GET y POST          [TODO]
+         *** Escribir la URL para el GET y POST          [DONE]
          */
 
         public async void Login()
@@ -114,7 +121,7 @@
                 return;
             }
 
-            this.Url = "https://como-que-hace-falta-una-url/ ";
+            this.Url = "https://isoapi.azurewebsites.net/SISTEMA/Login/Acceso";
 
             var response = await apiService.AccessRegister(
                 this.Url,
@@ -122,6 +129,9 @@
                 this.User,
                 int.Parse(this.Company),
                 DeviceInfo.Name);
+
+            var obj = (JObject)JsonConvert.DeserializeObject(JsonConvert.SerializeObject(response));
+            Console.WriteLine(obj);
 
             if (!response.IsSuccess)
             {
@@ -134,6 +144,7 @@
                 return;
             }
 
+            
             MainViewModel.GetInstance().Workspace = new WorkspaceViewModel();
             await Application.Current.MainPage.Navigation.PushAsync(new WorkspacePage());
 

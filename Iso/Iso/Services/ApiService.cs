@@ -6,9 +6,13 @@
     using System.Net.Http;
     using System;
     using Newtonsoft.Json;
+    using System.Net.Http.Headers;
+    using Newtonsoft.Json.Linq;
+    using System.Linq;
 
     public class ApiService
     {
+
         public async Task<Response> CheckConnection()
         {
             if (!CrossConnectivity.Current.IsConnected)
@@ -41,7 +45,7 @@
             string url,
             string password,
             string usuario,
-            int idEmpresa,
+            int id_empresa,
             string nombreDispositivo)
         {
             try
@@ -50,11 +54,13 @@
                 var content = new StringContent(
                     JsonConvert.SerializeObject(new
                     {
-                        passwordusuario = password,
-                        nombreusuario = usuario,
-                        idempresa = idEmpresa,
+                        PasswordUsuario = password,
+                        NombreUsuario = usuario,
+                        idEmpresa = id_empresa,
                         dispositivo = nombreDispositivo
-                    }));
+                    }), System.Text.Encoding.UTF8);
+                MediaTypeHeaderValue mValue = new MediaTypeHeaderValue("application/json");
+                content.Headers.ContentType = mValue;
                 var result = await client.PostAsync(url, content);
 
                 var tokenJson = "";
@@ -63,10 +69,29 @@
                     tokenJson = await result.Content.ReadAsStringAsync();
                 }
 
+                var jsonData = (JObject)JsonConvert.DeserializeObject(tokenJson);
+                var tipo = jsonData.Descendants()
+                                    .OfType<JProperty>()
+                                    .FirstOrDefault(x => x.Name == "tipo")
+                                    ?.Value;
+
+                Console.WriteLine(tipo);
+
+                if (int.Parse(tipo.ToString()) == 200)
+                {
+                    return new Response
+                    {
+                        IsSuccess = true,
+                        Message = "¡Bienvenido!",
+                        Result = tokenJson
+                    };
+                }
+
                 return new Response
                 {
-                    IsSuccess = true,
-                    Message = "¡Bienvenido!"
+                    IsSuccess = false,
+                    Message = "¡Oops!",
+                    Result = tokenJson
                 };
             }
             catch (Exception ex)
