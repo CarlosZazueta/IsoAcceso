@@ -16,7 +16,7 @@
                 return new Response
                 {
                     IsSuccess = false,
-                    Message = "Please turn on your internet settings."
+                    Message = "Por favor habilita tus opciones de conexión."
                 };
             }
 
@@ -26,7 +26,7 @@
                 return new Response
                 {
                     IsSuccess = false,
-                    Message = "Check your internet connection."
+                    Message = "Revisa tu conexión a internet."
                 };
             }
 
@@ -35,6 +35,48 @@
                 IsSuccess = true,
                 Message = "Ok"
             };
+        }
+
+        public async Task<Response> AccessRegister(
+            string url,
+            string password,
+            string usuario,
+            int idEmpresa,
+            string nombreDispositivo)
+        {
+            try
+            {
+                var client = new HttpClient();
+                var content = new StringContent(
+                    JsonConvert.SerializeObject(new
+                    {
+                        passwordusuario = password,
+                        nombreusuario = usuario,
+                        idempresa = idEmpresa,
+                        dispositivo = nombreDispositivo
+                    }));
+                var result = await client.PostAsync(url, content);
+
+                var tokenJson = "";
+                if (result.IsSuccessStatusCode)
+                {
+                    tokenJson = await result.Content.ReadAsStringAsync();
+                }
+
+                return new Response
+                {
+                    IsSuccess = true,
+                    Message = "¡Bienvenido!"
+                };
+            }
+            catch (Exception ex)
+            {
+                return new Response
+                {
+                    IsSuccess = false,
+                    Message = "¡Error, usuario o contraseña incorrectos!"
+                };
+            }
         }
 
         public async Task<Response> Get<T>(string urlBase, string servicePrefix, string controller)

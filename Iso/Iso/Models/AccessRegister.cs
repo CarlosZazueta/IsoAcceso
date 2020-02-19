@@ -4,8 +4,6 @@
 
     public class AccessRegister
     {
-        public AccessRegister()
-        {
-        }
+        
     }
 }

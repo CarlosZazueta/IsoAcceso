@@ -2,10 +2,11 @@
 {
     using System.Windows.Input;
     using GalaSoft.MvvmLight.Command;
-    using Xamarin.Forms;
-    using Views;
     using Iso.Services;
-    using Iso.Models;
+    using Views;
+    using Xamarin.Essentials;
+    using Xamarin.Forms;
+    using ZXing.Net.Mobile.Forms;
 
     public class LoginViewModel : BaseViewModel
     {
@@ -88,12 +89,13 @@
 
         #region Consumers
         /*
-         * ===================
-         *        TODO
-         * ===================
+         * ====================
+         * ||--((*[TODO]*))--||
+         * ====================
+         * 
          * Implementar:
-         *** El envio de datos para el control de acceso
-         *** Escribir la URL para el GET y el POST
+         *** El envio de datos para el control de acceso [DONE]
+         *** Escribir la URL para el GET y POST          [TODO]
          */
 
         public async void Login()
@@ -112,9 +114,14 @@
                 return;
             }
 
-            this.Url = "https://Colocar-url/Login/datos";
+            this.Url = "https://como-que-hace-falta-una-url/ ";
 
-            var response = await apiService.Get<User>(this.Url, "", "");
+            var response = await apiService.AccessRegister(
+                this.Url,
+                this.Password,
+                this.User,
+                int.Parse(this.Company),
+                DeviceInfo.Name);
 
             if (!response.IsSuccess)
             {
@@ -148,6 +155,14 @@
             }
         }
 
+        public ICommand QRLoginCommand
+        {
+            get
+            {
+                return new RelayCommand(QRLogin);
+            }
+        }
+
         public ICommand ForgotPasswordCommand
         {
             get
@@ -161,6 +176,29 @@
             MainViewModel.GetInstance().ForgotPassword = new ForgotPasswordViewModel();
             await Application.Current.MainPage.Navigation.PushAsync(new ForgotPage());
 
+        }
+
+        public void QRLogin()
+        {
+            var scannerPage = new ZXingScannerPage
+            {
+                Title = "Login"
+            };
+            scannerPage.OnScanResult += (result) =>
+            {
+                scannerPage.IsScanning = false;
+
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    Application.Current.MainPage.Navigation.PopAsync();
+                    Application.Current.MainPage.DisplayAlert(
+                        "Valor Obtenido",
+                        result.Text,
+                        "OK");
+                });
+            };
+
+            Application.Current.MainPage.Navigation.PushAsync(scannerPage);
         }
         #endregion
     }

@@ -110,7 +110,7 @@
                             Grid.Row="8"
                             BackgroundColor="Gray"
                             BorderRadius="23"
-                            Command="{Binding LoginCommand}"
+                            Command="{Binding QRLoginCommand}"
                             HeightRequest="46"
                             WidthRequest="150"
                             HorizontalOptions="End"
